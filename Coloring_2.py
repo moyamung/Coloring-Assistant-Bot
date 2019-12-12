@@ -191,8 +191,8 @@ def coloring(image_set,torque,period):
         img_c,img_c_c,img_c_f=IP.Image_Process_data(img,img_colored)
     elif len(image_set)==3:
         img_c,img_c_c,img_c_f=image_set
-    #img_c=cv2.resize(img_c,((99,70)),interpolation=cv2.INTER_AREA)
-    #img_c_f=cv2.resize(img_c_f,((99,70)),interpolation=cv2.INTER_AREA)
+    img_c=cv2.resize(img_c,((297,270)),interpolation=cv2.INTER_AREA)
+    img_c_f=cv2.resize(img_c_f,((297,270)),interpolation=cv2.INTER_AREA)
     image_map=np.zeros((img_c.shape[1],img_c.shape[0]),np.int32)
     image_left=np.full((img_c.shape[0]),img_c.shape[1]+1)
     image_right=np.full((img_c.shape[0]),-1)

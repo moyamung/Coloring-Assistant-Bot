@@ -31,6 +31,7 @@ def Image_Detection(img):
     edged=cv2.Canny(blur,50,130)
 
     #cv2.imshow("a",edged)
+    cv2.imwrite('./process/edge.jpg',edged)
 
     (_,cnts,_)=cv2.findContours(edged.copy(),cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
     #print(cnts)
@@ -50,8 +51,8 @@ def Image_Detection(img):
             screenCnt=approx
             break
 
-    #cv2.drawContours(img,[screenCnt],-1,(0,255,0),2)
-    #cv2.imwrite('./process/draw.jpg',img)
+    cv2.drawContours(img,[screenCnt],-1,(0,255,0),2)
+    cv2.imwrite('./process/draw.jpg',img)
     #cv2.imshow("b",img)
 
     def points(pts):
@@ -234,10 +235,10 @@ def Image_Process_data(img,img_colored):
     image_crop=Image_Detection(img)
     image_crop_colored=Image_Detection(img_colored)
 
-    image_crop=Util.Bright(image_crop,40)
-    image_crop_colored=Util.Bright(image_crop_colored,40)
-    #image_crop=Util.Contrast_and_Bright(image_crop,0.8,30)
-    #image_crop_colored=Util.Contrast_and_Bright(image_crop_colored,0.8,30)
+    #image_crop=Util.Bright(image_crop,20) #Change this value
+    #image_crop_colored=Util.Bright(image_crop_colored,40)
+    image_crop=Util.Contrast_and_Bright(image_crop,1.25,-40)
+    image_crop_colored=Util.Contrast_and_Bright(image_crop_colored,1.25,-40)
 
     clicked=0
     click_point=(0,0)
@@ -246,7 +247,10 @@ def Image_Process_data(img,img_colored):
     print(colors)
     image_crop_fullcolor=image_crop.copy()
     for color in colors:
-        cv2.floodFill(image_crop_fullcolor,None,(color[1],color[0]),color[2],(10,)*3,(10,)*3,0)
+        cv2.floodFill(image_crop_fullcolor,None,(color[1],color[0]),color[2],(20,)*3,(20,)*3,0)
+    cv2.imwrite('./process/img_c.jpg',image_crop)
+    cv2.imwrite('./process/img_c_C.jpg',image_crop_colored)
+    cv2.imwrite('./process/img_c_f.jpg',image_crop_fullcolor)
     return image_crop,image_crop_colored,image_crop_fullcolor
     
 def temp_region():
@@ -265,13 +269,13 @@ def temp_region():
 
 
 if __name__=="__main__":
-    img=cv2.imread("test_7.jpeg")
-    img_colored=cv2.imread("test_7_colored.jpeg")
+    img=cv2.imread("i1.jpg")
+    img_colored=cv2.imread("i2.jpg")
     image_crop,image_crop_colored,image_crop_fullcolor=Image_Process_data(img,img_colored)
-    #cv2.imwrite('./process/img_c.jpg',image_crop)
-    #cv2.imwrite('./process/img_c_C.jpg',image_crop_colored)
-    #cv2.imwrite('./process/img_c_f.jpg',image_crop_fullcolor)
-    #cv2.imshow("aa",image_crop)
+    cv2.imwrite('./process/img_c.jpg',image_crop)
+    cv2.imwrite('./process/img_c_C.jpg',image_crop_colored)
+    cv2.imwrite('./process/img_c_f.jpg',image_crop_fullcolor)
+    cv2.imshow("aa",image_crop)
     cv2.imshow("f",image_crop_fullcolor)
     i_c_f_s=cv2.resize(image_crop_fullcolor,((99,70)),interpolation=cv2.INTER_AREA)
     cv2.imshow("asdf",i_c_f_s)
